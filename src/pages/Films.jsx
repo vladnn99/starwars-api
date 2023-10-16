@@ -15,8 +15,12 @@ const Films = () => {
       <Link to={"/"} className="absolute text-white text-xl top-5 right-5 z-10">
         <IoCloseCircleOutline className="text-5xl transition-all duration-300 hover:rotate-90 ease-in" />
       </Link>
-      {films.map((film) => {
-        return <FilmCover film={film} />;
+      {films.map((film, id) => {
+        return (
+          <Link to={`/films/film/${id + 1}`}>
+            <FilmCover film={film} />
+          </Link>
+        );
       })}
     </div>
   );

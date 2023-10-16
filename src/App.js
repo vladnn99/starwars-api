@@ -6,16 +6,17 @@ import Species from "./pages/Species";
 import Starships from "./pages/Starships";
 import Vehicles from "./pages/Vehicles";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Sidebar from "./components/Sidebar";
+import Film from "./components/Film";
 
 const App = () => {
   return (
-    <div className="flex w-full h-full min-h-screen items-center bg-gray-800 text-yellow-300 px-5 md:px-0 gap-10 justify-center">
+    <div className="flex w-full h-full min-h-screen items-center bg-gray-800 text-yellow-300 px-5 md:px-0 gap-10">
       <Router>
         {/* <Sidebar /> */}
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/films/" element={<Films />} />
+          <Route path="/films/film/:id" element={<Film />} />
           <Route path="/people/" element={<People />} />
           <Route path="/planets/" element={<Planets />} />
           <Route path="/species/" element={<Species />} />

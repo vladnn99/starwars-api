@@ -1,6 +1,7 @@
 import React from "react";
 
 const FilmCover = ({ film }) => {
+  // destructure film
   const { title, episode_id, opening_crawl, director, producer, image } = film;
 
   return (
