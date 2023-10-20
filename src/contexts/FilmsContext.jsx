@@ -29,7 +29,9 @@ const FilmsProvider = ({ children }) => {
   }, []);
 
   return (
-    <FilmsContext.Provider value={{ films }}>{children}</FilmsContext.Provider>
+    <FilmsContext.Provider value={{ films, setFilms }}>
+      {children}
+    </FilmsContext.Provider>
   );
 };
 
