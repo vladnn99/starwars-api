@@ -8,6 +8,8 @@ import Vehicles from "./pages/Vehicles";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Film from "./components/Film";
 import Character from "./components/Character";
+import Planet from "./components/Planet";
+import Vehicle from "./components/Vehicle";
 
 const App = () => {
   return (
@@ -21,9 +23,11 @@ const App = () => {
           <Route path="/people/" element={<People />} />
           <Route path="/people/:id" element={<Character />} />
           <Route path="/planets/" element={<Planets />} />
+          <Route path="/planets/:id" element={<Planet />} />
           <Route path="/species/" element={<Species />} />
           <Route path="/starships/" element={<Starships />} />
           <Route path="/vehicles/" element={<Vehicles />} />
+          <Route path="/vehicles/:id" element={<Vehicle />} />
         </Routes>
       </Router>
     </div>

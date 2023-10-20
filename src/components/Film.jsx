@@ -7,84 +7,124 @@ import { IoCloseCircleOutline } from "react-icons/io5";
 const Film = () => {
   const { id } = useParams();
   const { films, setFilms } = useContext(FilmsContext);
-  const [charactersData, setCharactersData] = useState([]);
-  const [characterIds, setCharacterIds] = useState([]);
   const [film, setFilm] = useState({});
-
-  // const film = films.find((item) => {
-  //   return item.episode_id === parseInt(id);
-  // });
+  const [charactersData, setCharactersData] = useState([]);
+  const [charactersIds, setCharactersIds] = useState([]);
+  const [planetsData, setPlanetsData] = useState([]);
+  const [planetsIds, setPlanetsIds] = useState([]);
+  const [vehiclesData, setVehiclesData] = useState([]);
+  const [vehiclesIds, setVehiclesIds] = useState([]);
 
   useEffect(() => {
     setFilm(films[id - 1]);
-    if (film && film.characters) {
-      setCharacterIds(film.characters);
-    }
   }, [films, film, id]);
 
   useEffect(() => {
-    // Fetch character data
-    const fetchCharacterData = async () => {
+    // Fetch characters data
+    const fetchCharactersData = async () => {
       if (film && film.characters) {
         try {
-          const characterIds = film.characters.map((character) => {
-            return parseInt(character.match(/\/(\d+)\/$/)[1]);
-          });
-          setCharacterIds(characterIds);
+          const responses = await Promise.all(
+            film.characters.map(async (source) => {
+              const response = await fetch(source);
+              return response.json();
+            })
+          );
+          // Now 'responses' is an array of character data
+          console.log(responses);
+          setCharactersData(responses);
         } catch (error) {
-          console.error("Error fetching character data:", error);
+          console.error("Error fetching characters data:", error);
         }
       }
     };
-
-    fetchCharacterData();
+    fetchCharactersData();
   }, [film]);
 
   useEffect(() => {
-    const fetchCharacters = async () => {
-      if (characterIds) {
-        const responses = await Promise.all(
-          characterIds.map(async (id) => {
-            const response = await fetch(`https://swapi.dev/api/people/${id}`);
-            return response.json();
-          })
-        );
-        // Now 'responses' is an array of character data
-        console.log(responses);
-        setCharactersData(responses);
+    if (film && film.characters) {
+      try {
+        const ids = film.characters.map((character) => {
+          return parseInt(character.match(/\/(\d+)\/$/)[1]);
+        });
+        setCharactersIds(ids);
+      } catch (error) {
+        console.error("Error getting films ID's", error);
       }
-    };
-    fetchCharacters();
-  }, [characterIds, id]);
+    }
+  }, [film]);
 
   useEffect(() => {
-    const consoleShow = async () => {
-      console.log(characterIds);
+    // fetch planets data
+    const fetchPlanetsData = async () => {
+      if (film && film.planets) {
+        try {
+          const responses = await Promise.all(
+            film.planets.map(async (source) => {
+              const response = await fetch(source);
+              return response.json();
+            })
+          );
+          console.log(responses);
+          setPlanetsData(responses);
+        } catch (error) {
+          console.error("Error fetching planets data", error);
+        }
+      }
     };
-    consoleShow();
-  }, [film, characterIds]);
+    fetchPlanetsData();
+  }, [film]);
+
+  useEffect(() => {
+    if (film && film.planets) {
+      try {
+        const ids = film.planets.map((planet) => {
+          return parseInt(planet.match(/\/(\d+)\/$/)[1]);
+        });
+        setPlanetsIds(ids);
+      } catch (error) {
+        console.error("Error getting films ID's", error);
+      }
+    }
+  }, [film]);
+
+  useEffect(() => {
+    // fetch vehicles data
+    const fetchVehiclesData = async () => {
+      if (film && film.vehicles) {
+        try {
+          const responses = await Promise.all(
+            film.vehicles.map(async (source) => {
+              const response = await fetch(source);
+              return response.json();
+            })
+          );
+          console.log(responses);
+          setVehiclesData(responses);
+        } catch (error) {
+          console.error("Error fetching planets data", error);
+        }
+      }
+    };
+    fetchVehiclesData();
+  }, [film]);
+
+  useEffect(() => {
+    if (film && film.vehicles) {
+      try {
+        const ids = film.vehicles.map((vehicle) => {
+          return parseInt(vehicle.match(/\/(\d+)\/$/)[1]);
+        });
+        setVehiclesIds(ids);
+      } catch (error) {
+        console.error("Error getting films ID's", error);
+      }
+    }
+  }, [film]);
 
   if (!films || films.length === 0) {
     return <div>Loading film...</div>;
   }
-
-  // const fetchCharacters = async (id) => {
-  //   const response = await fetch(`https://swapi.dev/api/people/${id}`);
-  //   const characterData = await response.json();
-  //   return characterData;
-  // };
-
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     const characterDataArray = await Promise.all(
-  //       characterIds.map((id) => fetchCharacters(id))
-  //     );
-  //     setCharacters2(characterDataArray);
-  //   };
-  //   fetchData();
-  //   console.log(characterIds);
-  //   console.log(characters2);
-  // }, []);
 
   return (
     <div className="flex flex-col items-center w-full px-10">
@@ -99,7 +139,7 @@ const Film = () => {
             <IoCloseCircleOutline className="text-5xl transition-all duration-300 hover:rotate-90 ease-in" />
           </Link>
           <h1 className="text-xl font-semibold">
-            {/* Episode {film.episode_id}: {film.title} */}
+            Episode {film.episode_id}: {film.title}
           </h1>
           <div className="flex mt-5 pb-5 max-w-2xl">
             <div className="flex-1">
@@ -116,7 +156,7 @@ const Film = () => {
             {/* characters */}
           </div>
           <div className="border-b w-full"></div>
-          <div className="mt-10 self-start">
+          <div className="mt-10 self-start border-b pb-5">
             <h2 className="text-lg">Characters</h2>
             <div className="flex flex-wrap">
               {(!charactersData || charactersData.length === 0) && (
@@ -126,13 +166,54 @@ const Film = () => {
               )}
               {(charactersData || charactersData.length !== 0) &&
                 charactersData.map((character, index) => {
-                  // console.log(index + 1);
                   return (
                     <Link
-                      to={`/people/${characterIds[index]}`}
+                      to={`/people/${charactersIds[index]}`}
                       className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
                     >
                       {character.name}
+                    </Link>
+                  );
+                })}
+            </div>
+          </div>
+          <div className="mt-10 self-start border-b pb-5">
+            <h2 className="text-lg">Planets</h2>
+            <div className="flex flex-wrap">
+              {(!planetsData || planetsData.length === 0) && (
+                <div>
+                  <p>Planets Loading...</p>
+                </div>
+              )}
+              {(planetsData || planetsData.length !== 0) &&
+                planetsData.map((planet, index) => {
+                  return (
+                    <Link
+                      to={`/planets/${planetsIds[index]}`}
+                      className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
+                    >
+                      {planet.name}
+                    </Link>
+                  );
+                })}
+            </div>
+          </div>
+          <div className="mt-10 self-start border-b pb-5">
+            <h2 className="text-lg">Vehicles</h2>
+            <div className="flex flex-wrap">
+              {(!vehiclesData || vehiclesData.length === 0) && (
+                <div>
+                  <p>Vehicles Loading...</p>
+                </div>
+              )}
+              {(vehiclesData || vehiclesData.length !== 0) &&
+                vehiclesData.map((vehicle, index) => {
+                  return (
+                    <Link
+                      to={`/vehicles/${vehiclesIds[index]}`}
+                      className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
+                    >
+                      {vehicle.name}
                     </Link>
                   );
                 })}
