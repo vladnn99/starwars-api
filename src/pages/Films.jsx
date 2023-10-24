@@ -13,7 +13,7 @@ const Films = () => {
   return (
     <div
       className={`${
-        !films || films.length == 0
+        !films || films.length === 0
           ? "flex items-center justify-center"
           : "grid grid-col-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
       }`}
