@@ -2,35 +2,31 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
 const Planets = () => {
-  const [planets, setPlanets] = useState([]);
-  const [source, setSource] = useState("https://swapi.dev/api/planets/");
+  const [sources, setSources] = useState([]);
+  const initialSource = "https://swapi.dev/api/planets";
 
-  // fetch planets data
-  const fetchPlanetsData = async (source) => {
+  const fetchSourcesData = async (source) => {
     try {
-      const response = await fetch(source);
-      const data = await response.json();
-      setPlanets((prevPlanets) => [...prevPlanets, data.results]);
-      console.log(planets.length);
-      if (data.next === null || planets.length === 5) {
-        setSource(null);
-      } else {
-        setSource(data.next);
+      if (!sources.includes(source)) {
+        console.log(source);
+        const response = await fetch(source);
+        const data = await response.json();
+        setSources((prevSources) => [...prevSources, source]);
+        if (data.next) {
+          fetchSourcesData(data.next);
+        }
       }
     } catch (error) {
       console.error("Error fetching planets data", error);
     }
   };
 
-  useEffect(() => {
-    if (source) {
-      fetchPlanetsData(source);
-    }
-  }, [source]);
+  // fetch them 1 by one, when loading the pages
+  // prepare the pages from router
 
-  if (!source) {
-    console.log(planets);
-  }
+  useEffect(() => {
+    fetchSourcesData(initialSource);
+  }, []);
 
   return <div className="flex">{/* Planets */}</div>;
 };
