@@ -4,13 +4,16 @@ import "./index.css";
 import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import FilmsProvider from "./contexts/FilmsContext";
-import { CharactersProvider } from "./contexts/CharactersContext";
+import CharactersProvider from "./contexts/CharactersContext";
+import PlanetsProvider from "./contexts/PlanetsContext";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <FilmsProvider>
     <CharactersProvider>
-      <App />
+      <PlanetsProvider>
+        <App />
+      </PlanetsProvider>
     </CharactersProvider>
   </FilmsProvider>
 );

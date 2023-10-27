@@ -1,12 +1,15 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PlanetCard from "../components/film/PlanetCard";
+import { PlanetsContext } from "../contexts/PlanetsContext";
 
 const Planets = () => {
+  const { pagesNo } = useContext(PlanetsContext);
   const [sources, setSources] = useState([]);
   const [source, setSource] = useState("https://swapi.dev/api/planets");
   const [planets, setPlanets] = useState([]);
   const [data, setData] = useState();
+  const [currentPage, setCurrentPage] = useState(1);
   const initialSource = "https://swapi.dev/api/planets";
 
   // const fetchSourcesData = async (source) => {
@@ -50,12 +53,14 @@ const Planets = () => {
   const nextPage = () => {
     if (data && data.next) {
       setSource(data.next);
+      setCurrentPage(currentPage + 1);
     }
   };
 
   const prevPage = () => {
     if (data && data.previous) {
       setSource(data.previous);
+      setCurrentPage(currentPage - 1);
     }
   };
   // fetch them 1 by one, when loading the pages
@@ -70,14 +75,26 @@ const Planets = () => {
       </div>
       <div className="flex justify-between w-full mb-8">
         {data && data.previous && (
-          <div className="cursor-pointer" onClick={prevPage}>
+          <Link
+            to={`${
+              currentPage === 2
+                ? "/planets"
+                : `/planets/?page=${currentPage - 1}`
+            } `}
+            className="cursor-pointer flex justify-end"
+            onClick={prevPage}
+          >
             Previous Page
-          </div>
-        )}{" "}
+          </Link>
+        )}
         {data && data.next && (
-          <div className="cursor-pointer" onClick={nextPage}>
+          <Link
+            to={`/planets/?page=${currentPage + 1}`}
+            className="cursor-pointer ml-auto"
+            onClick={nextPage}
+          >
             Next Page
-          </div>
+          </Link>
         )}
       </div>
     </div>
