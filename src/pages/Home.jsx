@@ -17,7 +17,7 @@ const Home = () => {
         People
       </Link>
       <Link
-        to={"/planets"}
+        to={"/planets/page=:page"}
         className="border transition hover:bg-yellow-300 hover:text-gray-800 duration-300 ease-in rounded-md w-full md:px-32 md:max-w-lg py-5 flex items-center justify-center cursor-pointer text-xl hover:scale-110"
       >
         Planets

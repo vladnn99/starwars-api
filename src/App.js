@@ -25,6 +25,7 @@ const App = () => {
           <Route path="/people/" element={<People />} />
           <Route path="/people/:id" element={<Character />} />
           <Route path="/planets/" element={<Planets />} />
+          <Route path="/planets/page=:page" element={<Planets />} />
           <Route path="/planets/:id" element={<Planet />} />
           <Route path="/species/" element={<SpeciesP />} />
           <Route path="/species/:id" element={<SpeciesC />} />
