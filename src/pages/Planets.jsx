@@ -5,32 +5,10 @@ import { PlanetsContext } from "../contexts/PlanetsContext";
 
 const Planets = () => {
   const { pagesNo } = useContext(PlanetsContext);
-  const [sources, setSources] = useState([]);
   const [source, setSource] = useState("https://swapi.dev/api/planets");
   const [planets, setPlanets] = useState([]);
   const [data, setData] = useState();
   const [currentPage, setCurrentPage] = useState(1);
-  const initialSource = "https://swapi.dev/api/planets";
-
-  // const fetchSourcesData = async (source) => {
-  //   try {
-  //     if (!sources.includes(source)) {
-  //       console.log(source);
-  //       const response = await fetch(source);
-  //       const data = await response.json();
-  //       setSources((prevSources) => [...prevSources, source]);
-  //       if (data.next) {
-  //         fetchSourcesData(data.next);
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error("Error fetching planets data", error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   fetchSourcesData(initialSource);
-  // }, []);
 
   useEffect(() => {
     const fetchSourceData = async (source) => {
@@ -68,7 +46,7 @@ const Planets = () => {
   return (
     <div className="flex flex-col items-center">
       <div className="text-2xl">Planets</div>
-      <div className="grid grid-cols-2 gap-6 my-8">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-6 my-8">
         {planets.map((planet) => {
           return <PlanetCard planet={planet} />;
         })}

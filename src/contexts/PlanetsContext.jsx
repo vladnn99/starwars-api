@@ -8,7 +8,6 @@ const PlanetsProvider = ({ children }) => {
     const fetchPages = async () => {
       const response = await fetch("https://swapi.dev/api/planets");
       const data = await response.json();
-      console.log(data.count, data.results.length);
       setPagesNo(parseInt(data.count / data.results.length));
     };
     fetchPages();

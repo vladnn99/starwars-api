@@ -7,7 +7,7 @@ import Vehicles from "./pages/Vehicles";
 import SpeciesP from "./pages/Species";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Film from "./components/Film";
-import Character from "./components/Character";
+import Person from "./components/Person";
 import Planet from "./components/Planet";
 import Vehicle from "./components/Vehicle";
 import SpeciesC from "./components/Species";
@@ -23,9 +23,8 @@ const App = () => {
           <Route path="/films/" element={<Films />} />
           <Route path="/films/film/:id" element={<Film />} />
           <Route path="/people/" element={<People />} />
-          <Route path="/people/:id" element={<Character />} />
+          <Route path="/people/:id" element={<Person />} />
           <Route path="/planets/" element={<Planets />} />
-          <Route path="/planets/?page=:page" element={<Planets />} />
           <Route path="/planets/:id" element={<Planet />} />
           <Route path="/species/" element={<SpeciesP />} />
           <Route path="/species/:id" element={<SpeciesC />} />

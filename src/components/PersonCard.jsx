@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 
-const PlanetCard = (props) => {
-  const { climate, name, population, url } = props.planet;
-  const [planetId, setPlanetId] = useState();
-
+const PersonCard = (props) => {
+  const { url, name, gender, birth_year } = props.person;
+  const [personId, setPersonId] = useState();
   useEffect(() => {
     if (url) {
       const id = parseInt(url.match(/\/(\d+)\/$/)[1]);
-      setPlanetId(id);
+      setPersonId(id);
     }
   }, [url]);
 
@@ -16,19 +15,19 @@ const PlanetCard = (props) => {
     <div className="border p-8 w-full md:w-64 flex flex-col justify-center items-center">
       <div className="text-lg">Name</div>
       <div className="font-light">{name}</div>
-      <div className="text-lg">Population</div>
-      <div className="font-light">{population}</div>
-      <div className="text-lg">Climate</div>
-      <div className="font-light">{climate}</div>
+      <div className="text-lg">Gender</div>
+      <div className="font-light">{gender}</div>
+      <div className="text-lg">Birth Year</div>
+      <div className="font-light">{birth_year}</div>
       <div className="text-lg">Url</div>
       <div className="font-light">{url}</div>
-      <Link to={`/planets/${planetId}`} className="w-full">
+      <Link to={`/people/${personId}`} className="w-full">
         <button className="mt-4 text-sm bg-gray-700 py-2 w-full">
-          See planet details
+          See person details
         </button>
       </Link>
     </div>
   );
 };
 
-export default PlanetCard;
+export default PersonCard;

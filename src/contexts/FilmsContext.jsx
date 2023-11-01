@@ -28,8 +28,14 @@ const FilmsProvider = ({ children }) => {
     fetchMovies();
   }, []);
 
+  const getIds = (array) => {
+    return array
+      ? array.map((element) => parseInt(element.url.match(/\/(\d+)\/$/)[1]))
+      : [];
+  };
+
   return (
-    <FilmsContext.Provider value={{ films, setFilms }}>
+    <FilmsContext.Provider value={{ films, setFilms, getIds }}>
       {children}
     </FilmsContext.Provider>
   );

@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FilmsContext } from "../contexts/FilmsContext";
+import { BiSolidPlanet } from "react-icons/bi";
 
 const Planet = () => {
   const { films } = useContext(FilmsContext);
@@ -10,12 +11,12 @@ const Planet = () => {
   const [planetFilms, setPlanetFilms] = useState([]);
   const [planetResidents, setPlanetResidents] = useState([]);
   const [residentIds, setResidentIds] = useState([]);
+
   // fetch planet data
   useEffect(() => {
     const fetchPlanet = async () => {
       const response = await fetch(`https://swapi.dev/api/planets/${id}`);
       const data = await response.json();
-      console.log(data);
       setPlanet(data);
     };
     fetchPlanet();
@@ -66,8 +67,9 @@ const Planet = () => {
     <div className="flex flex-col w-full px-10 h-fit py-10">
       {planet && (
         <div className="font-light flex flex-col gap-2">
-          <h1 className="text-xl font-normal border-b pb-1">
-            🌍 Planet {id} ({planet.name})
+          <h1 className="text-xl font-normal border-b pb-1 flex items-center">
+            <BiSolidPlanet className="w-12 h-12" />
+            &nbsp; Planet #{id} ({planet.name})
           </h1>
           <div className="mt-5">
             <span className="font-normal">Planet climate:</span>{" "}
