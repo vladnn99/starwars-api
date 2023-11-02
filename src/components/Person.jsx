@@ -3,14 +3,16 @@ import { useParams } from "react-router-dom";
 import { Link } from "react-router-dom";
 import { FilmsContext } from "../contexts/FilmsContext";
 import { BsPersonFill } from "react-icons/bs";
+import Tag from "./Tag";
 
 // needed: species, vehicles
-// done: films, planets, starships
+// done: films, planets, starships, vehicles
 
 const Person = () => {
   const { id } = useParams();
   const { films, ids, getIds } = useContext(FilmsContext);
   const [personObject, setPersonObject] = useState({});
+  const { data, starships, vehicles, planet, species } = personObject;
   const [idsObject, setIdsObject] = useState({});
   const [person, setPerson] = useState();
   const [personPlanet, setPersonPlanet] = useState();
@@ -32,6 +34,7 @@ const Person = () => {
     };
     fetchPerson();
   }, []);
+
   // filter films
   useEffect(() => {
     if (person && films) {
@@ -79,63 +82,6 @@ const Person = () => {
     console.log(personStarships);
   }, [person]);
 
-  // get ids
-  useEffect(() => {
-    const starshipsIds = personObject.starships
-      ? getIds(personObject.starships)
-      : [];
-    const vehiclesIds = personObject.vehicles
-      ? getIds(personObject.vehicles)
-      : [];
-
-    setIdsObject((prevValues) => {
-      return {
-        ...prevValues,
-        starshipsIds: starshipsIds,
-        vehiclesIds: vehiclesIds,
-      };
-    });
-  }, [personObject.starships, personObject.vehicles]);
-
-  // get vehiclesIds
-  // useEffect(() => {
-  //   if (personObject.vehicles) {
-  //     getIds(personObject.vehicles);
-  //   }
-  //   console.log(ids);
-  //   setIdsObject((prevValues) => {
-  //     return {
-  //       ...prevValues,
-  //       vehiclesIds: ids,
-  //     };
-  //   });
-  // }, [personObject.vehicles]);
-
-  // useEffect(() => {
-  //   if (personStarships) {
-  //     getIds(personStarships);
-  //   }
-  //   console.log(ids);
-  //   setPersonObject((prevState) => {
-  //     return {
-  //       ...prevState,
-  //       vehiclesIds: [1, 2, 3],
-  //     };
-  //   });
-  // }, [personPlanet]);
-
-  // useEffect(() => {
-  //   if (personFilms) {
-  //     console.log(ids);
-  //     setPersonObject((prevState) => {
-  //       return {
-  //         ...prevState,
-  //         vehiclesIds2: ["a", "b", "c"],
-  //       };
-  //     });
-  //   }
-  // }, [personPlanet]);
-
   // fetch planet
   useEffect(() => {
     const fetchPersonPlanet = async () => {
@@ -144,7 +90,6 @@ const Person = () => {
           console.log(person.homeworld);
           const response = await fetch(person.homeworld);
           const data = await response.json();
-          console.log(data);
           setPersonPlanet(data);
           setPersonObject((prevValues) => {
             return {
@@ -184,7 +129,6 @@ const Person = () => {
       }
     };
     fetchVehiclesData();
-    console.log(personVehicles);
   }, [person]);
 
   useEffect(() => {
@@ -193,6 +137,51 @@ const Person = () => {
       setPersonPlanetId(id);
     }
   }, [personPlanet]);
+
+  // fetch species
+  useEffect(() => {
+    const fetchSpeciesData = async () => {
+      if (person && person.species) {
+        try {
+          const responses = await Promise.all(
+            person.species.map(async (source) => {
+              const response = await fetch(source);
+              return response.json();
+            })
+          );
+          setPersonObject((prevValues) => {
+            return {
+              ...prevValues,
+              species: responses,
+            };
+          });
+        } catch (error) {
+          console.error("Error fetching vehicles data:", error);
+        }
+      }
+    };
+    fetchSpeciesData();
+  }, [person]);
+
+  // get ids
+  useEffect(() => {
+    if (data) {
+      const starshipsIds = data.starships ? getIds(data.starships) : [];
+      const vehiclesIds = data.vehicles ? getIds(data.vehicles) : [];
+      console.log(starshipsIds, vehiclesIds);
+      const planetId = data.homeworld ? getIds([data.homeworld]) : [];
+      const speciesId = data.species ? getIds(data.species) : [];
+      setIdsObject((prevValues) => {
+        return {
+          ...prevValues,
+          starshipsIds: starshipsIds,
+          vehiclesIds: vehiclesIds,
+          planetId: planetId,
+          speciesId: speciesId,
+        };
+      });
+    }
+  }, [data]);
 
   return (
     <div className="flex flex-col w-full px-10 h-fit py-10">
@@ -222,14 +211,16 @@ const Person = () => {
           </div>
           <div>
             <span className="font-normal">Person homeworld:</span>{" "}
-            {personPlanet && (
-              <Link
-                to={`/planets/${personPlanetId}`}
-                className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-              >
-                {personPlanet.name}
-              </Link>
-            )}
+            {planet &&
+              idsObject.planetId &&
+              [planet].map((planetElement, index) => {
+                return (
+                  <Tag
+                    link={`/planets/${idsObject.planetId[index]}`}
+                    element={planetElement.name}
+                  />
+                );
+              })}
           </div>
           <div>
             <span className="font-normal">Person mass:</span> {person.mass}
@@ -240,33 +231,40 @@ const Person = () => {
           </div>
           <div>
             <span className="font-normal">Person species:</span>{" "}
-            {person.species}
+            {species &&
+              idsObject.speciesId &&
+              species.map((spece, index) => {
+                return (
+                  <Tag
+                    link={`/species/${idsObject.speciesId[index]}`}
+                    element={spece.name}
+                  />
+                );
+              })}
           </div>
           <div>
             <span className="font-normal">Person starships: </span>
-            {personStarships &&
-              personStarships.map((starship) => {
+            {starships &&
+              idsObject.starshipsIds &&
+              starships.map((starship, index) => {
                 return (
-                  <Link
-                    to={"/"}
-                    className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-                  >
-                    {starship.name}
-                  </Link>
+                  <Tag
+                    link={`/starships/${idsObject.starshipsIds[index]}`}
+                    element={starship.name}
+                  />
                 );
               })}
           </div>
           <div>
             <span className="font-normal">Person vehicles: </span>{" "}
-            {personVehicles &&
-              personVehicles.map((vehicle) => {
+            {vehicles &&
+              idsObject.vehiclesIds &&
+              vehicles.map((vehicle, index) => {
                 return (
-                  <Link
-                    to={"/"}
-                    className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-                  >
-                    {vehicle.name}
-                  </Link>
+                  <Tag
+                    link={`/vehicles/${idsObject.vehiclesIds[index]}`}
+                    element={vehicle.name}
+                  />
                 );
               })}
           </div>

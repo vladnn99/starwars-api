@@ -30,7 +30,7 @@ const FilmsProvider = ({ children }) => {
 
   const getIds = (array) => {
     return array
-      ? array.map((element) => parseInt(element.url.match(/\/(\d+)\/$/)[1]))
+      ? array.map((element) => parseInt(element.match(/\/(\d+)\/$/)[1]))
       : [];
   };
 

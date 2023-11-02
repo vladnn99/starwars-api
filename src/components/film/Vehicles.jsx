@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import Tag from "../Tag";
+import { FilmsContext } from "../../contexts/FilmsContext";
 
 const Vehicles = (props) => {
   const { film } = props;
+  const { getIds } = useContext(FilmsContext);
   const [vehiclesData, setVehiclesData] = useState([]);
   const [vehiclesIds, setVehiclesIds] = useState([]);
   useEffect(() => {
@@ -27,15 +30,9 @@ const Vehicles = (props) => {
   }, [film]);
 
   useEffect(() => {
-    if (film && film.vehicles) {
-      try {
-        const ids = film.vehicles.map((vehicle) => {
-          return parseInt(vehicle.match(/\/(\d+)\/$/)[1]);
-        });
-        setVehiclesIds(ids);
-      } catch (error) {
-        console.error("Error getting films ID's", error);
-      }
+    if (film) {
+      const ids = getIds(film.vehicles);
+      setVehiclesIds(ids);
     }
   }, [film]);
   return (

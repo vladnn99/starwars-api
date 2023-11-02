@@ -1,9 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
+import { FilmsContext } from "../../contexts/FilmsContext";
+import Tag from "../Tag";
 
 const Planets = (props) => {
   const { film } = props;
+  const { getIds } = useContext(FilmsContext);
   const [planetsData, setPlanetsData] = useState([]);
   const [planetsIds, setPlanetsIds] = useState([]);
   useEffect(() => {
@@ -27,15 +30,9 @@ const Planets = (props) => {
   }, [film]);
 
   useEffect(() => {
-    if (film && film.planets) {
-      try {
-        const ids = film.planets.map((planet) => {
-          return parseInt(planet.match(/\/(\d+)\/$/)[1]);
-        });
-        setPlanetsIds(ids);
-      } catch (error) {
-        console.error("Error getting films ID's", error);
-      }
+    if (film) {
+      const ids = getIds(film.planets);
+      setPlanetsIds(ids);
     }
   }, [film]);
   return (
@@ -50,13 +47,11 @@ const Planets = (props) => {
         {(planetsData || planetsData.length !== 0) &&
           planetsData.map((planet, index) => {
             return (
-              <Link
+              <Tag
                 key={planetsIds[index]}
-                to={`/planets/${planetsIds[index]}`}
-                className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-              >
-                {planet.name}
-              </Link>
+                link={`/planets/${planetsIds[index]}`}
+                element={planet.name}
+              />
             );
           })}
       </div>

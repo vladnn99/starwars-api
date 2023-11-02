@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 // import films context
 import { FilmsContext } from "../contexts/FilmsContext";
 // import film
-import FilmCover from "../components/FilmCover";
+import FilmCover from "../components/film/FilmCover";
 import { Link } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
 

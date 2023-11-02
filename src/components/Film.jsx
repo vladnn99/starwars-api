@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import { FilmsContext } from "../contexts/FilmsContext";
 import { Link } from "react-router-dom";
 import { IoCloseCircleOutline } from "react-icons/io5";
-import Characters from "./film/Characters";
+import People from "./film/People";
 import Planets from "./film/Planets";
 import Vehicles from "./film/Vehicles";
 import Species from "./film/Species";
@@ -11,7 +11,7 @@ import Starships from "./film/Starships";
 
 const Film = () => {
   const { id } = useParams();
-  const { films, setFilms } = useContext(FilmsContext);
+  const { films } = useContext(FilmsContext);
   const [film, setFilm] = useState({});
 
   useEffect(() => {
@@ -24,8 +24,6 @@ const Film = () => {
   console.log(films);
   return (
     <div className="flex flex-col items-center w-full px-10">
-      {/* <div>{film && film.title}</div> */}
-      {/* {film && setChar()} */}
       {film && (
         <div>
           <Link
@@ -51,7 +49,7 @@ const Film = () => {
             </div>
             {/* characters */}
           </div>
-          <Characters film={film} id={id} />
+          <People film={film} id={id} />
           <Planets film={film} id={id} />
           <Species film={film} id={id} />
           <Starships film={film} id={id} />

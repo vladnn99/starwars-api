@@ -1,8 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Tag from "../Tag";
+import { FilmsContext } from "../../contexts/FilmsContext";
 
 const Starships = (props) => {
   const { film } = props;
+  const { getIds } = useContext(FilmsContext);
   const [starshipsData, setStarshipsData] = useState([]);
   const [starshipsIds, setStarshipsIds] = useState([]);
   useEffect(() => {
@@ -27,15 +30,9 @@ const Starships = (props) => {
   }, [film]);
 
   useEffect(() => {
-    if (film && film.starships) {
-      try {
-        const ids = film.starships.map((starship) => {
-          return parseInt(starship.match(/\/(\d+)\/$/)[1]);
-        });
-        setStarshipsIds(ids);
-      } catch (error) {
-        console.error("Error getting films ID's", error);
-      }
+    if (film) {
+      const ids = getIds(film.starships);
+      setStarshipsIds(ids);
     }
   }, [film]);
 

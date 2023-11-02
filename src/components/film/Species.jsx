@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { IoCloseCircleOutline } from "react-icons/io5";
 import { Link } from "react-router-dom";
+import { FilmsContext } from "../../contexts/FilmsContext";
+import Tag from "../Tag";
 
 const Species = (props) => {
   const { film } = props;
+  const { getIds } = useContext(FilmsContext);
   const [speciesData, setSpeciesData] = useState([]);
   const [speciesIds, setSpeciesIds] = useState([]);
   useEffect(() => {
@@ -27,17 +30,12 @@ const Species = (props) => {
   }, [film]);
 
   useEffect(() => {
-    if (film && film.species) {
-      try {
-        const ids = film.species.map((species) => {
-          return parseInt(species.match(/\/(\d+)\/$/)[1]);
-        });
-        setSpeciesIds(ids);
-      } catch (error) {
-        console.error("Error getting species ID's", error);
-      }
+    if (film) {
+      const ids = getIds(film.species);
+      setSpeciesIds(ids);
     }
   }, [film]);
+
   return (
     <div className="mt-10 self-start border-b pb-5">
       <h2 className="text-lg">Species</h2>
@@ -50,13 +48,11 @@ const Species = (props) => {
         {(speciesData || speciesData.length !== 0) &&
           speciesData.map((species, index) => {
             return (
-              <Link
+              <Tag
                 key={speciesIds[index]}
-                to={`/species/${speciesIds[index]}`}
-                className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-              >
-                {species.name}
-              </Link>
+                link={`/species/${speciesIds[index]}`}
+                element={species.name}
+              />
             );
           })}
       </div>
