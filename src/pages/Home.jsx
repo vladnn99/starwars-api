@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const Home = () => {
   return (
-    <div className="flex flex-col gap-8 w-full items-center mx-10">
+    <div className="flex flex-col gap-8 w-full items-center mx-10 justify-center">
       <Link
         className="border transition hover:bg-yellow-300 hover:text-gray-800 duration-300 ease-in rounded-md w-full md:px-32 md:max-w-lg py-5 flex items-center justify-center cursor-pointer text-xl hover:scale-110"
         to={"/films"}

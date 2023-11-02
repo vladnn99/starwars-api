@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import PlanetCard from "../components/film/PlanetCard";
+import PlanetCard from "../components/PlanetCard";
 import { PlanetsContext } from "../contexts/PlanetsContext";
 
 const Planets = () => {

@@ -47,13 +47,10 @@ const Vehicles = (props) => {
         {(vehiclesData || vehiclesData.length !== 0) &&
           vehiclesData.map((vehicle, index) => {
             return (
-              <Link
-                key={vehiclesIds[index]}
-                to={`/vehicles/${vehiclesIds[index]}`}
-                className="bg-gray-700 my-1 mx-1 px-5 py-1 rounded-md"
-              >
-                {vehicle.name}
-              </Link>
+              <Tag
+                link={`/vehicles/${vehiclesIds[index]}`}
+                element={vehicle.name}
+              />
             );
           })}
       </div>
