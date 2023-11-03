@@ -41,8 +41,7 @@ const Planets = () => {
       setCurrentPage(currentPage - 1);
     }
   };
-  // fetch them 1 by one, when loading the pages
-  // prepare the pages from router
+
   return (
     <div className="flex flex-col items-center w-full">
       <div className="text-2xl w-full bg-gray-700 items-center justify-center flex py-3">

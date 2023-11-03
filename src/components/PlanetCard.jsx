@@ -20,8 +20,6 @@ const PlanetCard = (props) => {
       <div className="font-light">{population}</div>
       <div className="text-lg">Climate</div>
       <div className="font-light">{climate}</div>
-      <div className="text-lg">Url</div>
-      <div className="font-light">{url}</div>
       <Link to={`/planets/${planetId}`} className="w-full">
         <button className="mt-4 text-sm bg-gray-700 py-2 w-full">
           See planet details

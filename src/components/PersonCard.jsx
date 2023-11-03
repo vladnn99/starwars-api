@@ -19,8 +19,6 @@ const PersonCard = (props) => {
       <div className="font-light">{gender}</div>
       <div className="text-lg">Birth Year</div>
       <div className="font-light">{birth_year}</div>
-      <div className="text-lg">Url</div>
-      <div className="font-light">{url}</div>
       <Link to={`/people/${personId}`} className="w-full">
         <button className="mt-4 text-sm bg-gray-700 py-2 w-full">
           See person details

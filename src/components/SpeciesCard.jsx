@@ -7,8 +7,8 @@ const SpeciesCard = (props) => {
     props.species;
   const { getIds } = useContext(FilmsContext);
   const [speciesId, setSpeciesId] = useState();
+  const [species, setSpecies] = useState([]);
 
-  //   need pagination
   useEffect(() => {
     if (url) {
       const [id] = getIds([url]);
@@ -25,8 +25,6 @@ const SpeciesCard = (props) => {
         <div className="font-light">{classification}</div>
         <div className="text-lg">Designation</div>
         <div className="font-light">{designation}</div>
-        <div className="text-lg">Url</div>
-        <div className="font-light">{url}</div>
         <Link to={`/species/${speciesId}`} className="w-full">
           <button className="mt-4 text-sm bg-gray-700 py-2 w-full">
             See species details
