@@ -11,7 +11,7 @@ import Person from "./components/Person";
 import Planet from "./components/Planet";
 import Vehicle from "./components/Vehicle";
 import SpeciesC from "./components/Species";
-import Starship from "./Starship";
+import Starship from "./components/Starship";
 
 const App = () => {
   return (

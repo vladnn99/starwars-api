@@ -2,24 +2,24 @@ import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import { FilmsContext } from "../contexts/FilmsContext";
 import Tag from "./Tag";
-import { BsCarFrontFill } from "react-icons/bs";
+import { BsFillRocketTakeoffFill } from "react-icons/bs";
 
-const Vehicle = () => {
+const Starship = () => {
   const { id } = useParams();
   const { films, ids, getIds } = useContext(FilmsContext);
-  const [vehicleObject, setVehicleObject] = useState({});
+  const [starshipObject, setStarshipObject] = useState({});
   const [idsObject, setIdsObject] = useState({});
-  const { data, films: vehicleFilms, pilots } = vehicleObject;
+  const { data, pilots, films: starshipFilms } = starshipObject;
 
-  // fetch vehicle data
+  // fetch starship data
   useEffect(() => {
-    const fetchVehicle = async () => {
-      const response = await fetch(`https://swapi.dev/api/vehicles/${id}`);
+    const fetchStarship = async () => {
+      const response = await fetch(`https://swapi.dev/api/starships/${id}`);
       const data = await response.json();
       console.log(data);
-      setVehicleObject({ data });
+      setStarshipObject({ data });
     };
-    fetchVehicle();
+    fetchStarship();
   }, []);
 
   // filter films
@@ -31,7 +31,7 @@ const Vehicle = () => {
       const filteredFilms = films.filter((film) => {
         return ids.includes(film.episode_id);
       });
-      setVehicleObject((prevValues) => {
+      setStarshipObject((prevValues) => {
         return {
           ...prevValues,
           films: filteredFilms,
@@ -51,7 +51,7 @@ const Vehicle = () => {
               return response.json();
             })
           );
-          setVehicleObject((prevValues) => {
+          setStarshipObject((prevValues) => {
             return {
               ...prevValues,
               pilots: responses,
@@ -85,10 +85,10 @@ const Vehicle = () => {
       {data && (
         <div className="font-light flex flex-col gap-4">
           <h1 className="text-xl font-normal border-b pb-1 flex items-center">
-            <BsCarFrontFill className="w-12 h-12" />
-            &nbsp; Vehicle #{id} - {data.name}
+            <BsFillRocketTakeoffFill className="w-12 h-12" />
+            &nbsp; Starship #{id} - {data.name}
           </h1>
-          <div>
+          <div className="mt-5">
             <span className="font-normal">Model:</span> {data.model}
           </div>
           <div>
@@ -110,17 +110,25 @@ const Vehicle = () => {
             <span className="font-normal">Crew:</span> {data.crew}
           </div>
           <div>
-            <span className="font-normal">Passengers</span> {data.passengers}
+            <span className="font-normal">Passengers:</span> {data.passengers}
           </div>
           <div>
-            <span className="font-normal">Cargo capacity</span>{" "}
+            <span className="font-normal">Cargo capacity:</span>{" "}
             {data.cargo_capacity}
           </div>
           <div>
-            <span className="font-normal">Consumables</span> {data.consumables}
+            <span className="font-normal">Consumables:</span> {data.consumables}
           </div>
           <div>
-            <span className="font-normal">Class: </span> {data.vehicle_class}
+            <span className="font-normal">Hyperdrive rating:</span>{" "}
+            {data.hyperdrive_rating}
+          </div>
+          <div>
+            <span className="font-normal">MGLT:</span> {data.MGLT}
+          </div>
+          <div>
+            <span className="font-normal">Starship class:</span>{" "}
+            {data.starship_class}
           </div>
           <div>
             <span className="font-normal">Pilots:</span>{" "}
@@ -137,12 +145,12 @@ const Vehicle = () => {
           </div>
           <div>
             <span className="font-normal">Films:</span>{" "}
-            {vehicleFilms &&
+            {starshipFilms &&
               idsObject.filmsIds &&
-              vehicleFilms.map((film, index) => {
+              starshipFilms.map((film, index) => {
                 return (
                   <Tag
-                    link={`/films/film/${idsObject.filmsIds[index]}`}
+                    link={`/films/film/${idsObject.pilotsIds[index]}`}
                     element={film.title}
                   />
                 );
@@ -154,4 +162,4 @@ const Vehicle = () => {
   );
 };
 
-export default Vehicle;
+export default Starship;

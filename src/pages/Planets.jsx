@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import PlanetCard from "../components/PlanetCard";
 import { PlanetsContext } from "../contexts/PlanetsContext";
+import { BsChevronRight, BsChevronLeft } from "react-icons/bs";
 
 const Planets = () => {
   const { pagesNo } = useContext(PlanetsContext);
@@ -52,7 +53,7 @@ const Planets = () => {
           return <PlanetCard planet={planet} />;
         })}
       </div>
-      <div className="flex justify-between w-full mb-8 px-5">
+      <div className="flex justify-center w-full mb-8 px-5 gap-3">
         {data && data.previous && (
           <Link
             to={`${
@@ -60,19 +61,21 @@ const Planets = () => {
                 ? "/planets"
                 : `/planets/?page=${currentPage - 1}`
             } `}
-            className="cursor-pointer flex justify-end"
+            className="cursor-pointer flex justify-end items-center group"
             onClick={prevPage}
           >
+            <BsChevronLeft className="w-8 h-8 group-hover:-translate-x-1 transition duration-300 ease-out" />
             Previous Page
           </Link>
         )}
         {data && data.next && (
           <Link
             to={`/planets/?page=${currentPage + 1}`}
-            className="cursor-pointer ml-auto"
+            className="cursor-pointer flex items-center group"
             onClick={nextPage}
           >
-            Next Page
+            Next Page{" "}
+            <BsChevronRight className="w-8 h-8 group-hover:translate-x-1 transition duration-300 ease-out" />
           </Link>
         )}
       </div>
